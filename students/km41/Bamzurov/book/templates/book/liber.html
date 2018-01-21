@@ -1,0 +1,17 @@
+{% extends 'book/base.html' %}
+{% block content %}
+<form method="post">
+	<h1> BOOK = {{object.name}} </h1>
+	{% if request.user.is_superuser %}
+	<input value="{{object.name}}" name="bookNa"/>
+	{% endif %}
+	<h2> Authour = {{object.author}} </h2>
+	{% if request.user.is_superuser %}
+	<input value={{object.author}} name="bookAu"/>
+	{% endif %}
+	<h3> pub_date = {{object.pub_date}} </h3>
+	{% if request.user.is_superuser %}
+	<input value={{object.pub_date}} name="bookDa"/>
+	{% endif %}
+</form>
+{% endblock %}

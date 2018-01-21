@@ -1,0 +1,54 @@
+{% extends 'book/base.html' %}
+{% load static %}
+
+{% block script %}
+  $('.i2').hide();
+  $('.i1_inner').click(function(){
+    console.log(this);
+    var a = $(this).closest('.i1');
+    a.hide();
+    var b = a.attr('class').split(/\s+/)
+    $.each(b, function(index, item){
+        var myRe = /i1_(\d+)/g;
+        var c = myRe.exec(item);
+        if (c && c[1])
+        {
+          $('.i2_'.concat(c[1].toString())).show();
+          console.log('.i2_'.concat(c[1].toString()));
+        }
+      }
+    );
+  })
+{% endblock %}
+
+
+{% block content %}
+  <h2>Welcome, {{ user.username }}!</h2>
+  <h3> Your groups: </h3>
+  <ul>
+  {% if object %}
+	  {% for group in object %}
+      <div class="i1_{{group.id}} i1">
+  	  	<a id="{{group.id}}" href="{% url 'groupBooks' group.id %}"><li>{{ group.name }}</li></a>
+        </br>
+        <input value="edit" type="button" class="i1_inner"/>
+      </div>
+      <form class="i2 i2_{{group.id}}" method="post" action="editGroup/{{group.id}}">
+        {% csrf_token %}
+        <input name="newEdit" class="i2_inner"/>
+        <input type="submit" value="ok"/>
+      </form>
+      <form method="post" action="deleteGroup/{{group.id}}">
+        {% csrf_token %}
+        <input type="submit" value="delete"/>
+      </form>
+	  {% endfor %}
+  {% else %}
+      <h4> You don't have any groups( </h4>
+  {% endif %}
+  </ul>
+  <a href="{% url 'createGroup' %}">
+  	<h3> Create New Group </h3>
+  </a>
+
+{% endblock %}

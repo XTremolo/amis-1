@@ -1,0 +1,19 @@
+{% extends 'book/base.html' %}
+{% block content %}
+<ul>
+    {% for book in object %}
+    	<li>
+    		<a href="{% url 'liber' book.BOOK_ID %}">
+	    		{{ book.NAME }}  ({{ book.AUTHOR }} Author) 
+	    		</br>
+	    		Date of publication - {{ book.PUB_DATE }}
+	    		</br>
+    		</a>
+	    	<form method="post" action="deleteBookFromGroup/{{book.BOOK_ID}}/{{group}}">
+	    		{% csrf_token %}
+	    		<input type="submit" value="Delete"/>
+	    	</form>
+    	</li>
+    {% endfor %}
+</ul>
+{% endblock %}

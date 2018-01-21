@@ -1,0 +1,34 @@
+{% extends 'book/base.html' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'book/style.css' %}" />
+
+{% block content %}
+<h1>Books</h1>
+{% if error %}
+	<h2>{{ error }}</h2>
+{% endif %}
+<form method="post">
+<ul>
+    {% for book in object_list %}
+    	<li>
+    		<a href="{% url 'liber' book.ID %}">
+	    		{{ book.NAME }}  ({{ book.AUTHOR }} Author) 
+	    		</br>
+	    		Date of publication - {{ book.PUB_DATE }}
+	    		</br>
+    		</a>
+    		<span class="custom-dropdown">
+			    <select name="group_{{book.ID}}">
+			    	<option value="None" selected disabled="">NO CHANGES</option>
+			    	{% for group in user.group_set.all %}
+			        	<option value="{{group.name}}"> {{ group.name }}</option>
+			        {% endfor %}
+			    </select>
+			</span>
+				{% csrf_token %}
+    	</li>
+    {% endfor %}
+</ul>
+		<input type="submit" value="Submit" name="book""/>
+</form>
+{% endblock %}
